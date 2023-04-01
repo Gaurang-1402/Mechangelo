@@ -118,35 +118,27 @@ struct DrawingView: View {
         inkTool = tool
     }
     
-    // not working.
-    func deleteAllImages() {
-        let storageRef = Storage.storage().reference()
-        storageRef.delete { error in
-            if let error {
-                print("DEBUG: error \(error)")
-            }
-        }
-    }
-    
     func uploadImage(image: UIImage) {
         let storageRef = Storage.storage().reference()
         let imageData = image.jpegData(compressionQuality: 0.8)
         guard let imageData = imageData else { return }
-        let fileRef = storageRef.child("\(UUID().uuidString).jpg")
+        let fileRef = storageRef.child("image.jpg")
         let metadata = StorageMetadata()
         metadata.contentType = ".jpg"
-//        fileRef.putData(imageData, metadata: metadata) { metadata, error in
-//            // optinoally add to the database. this is the completion func.
-//            print("DEBUG: sent image data.")
-//        }
         
         storageRef.listAll { (result, error) in
-            if let error = error {
+            if let error {
+                uploadImageWithoutDeleting(image)
                 print("Error listing files: \(error.localizedDescription)")
                 return
             }
             let deleteGroup = DispatchGroup()
-            for file in result!.items {
+            guard let result else {
+                print("DEBUG: no files to delete")
+                return
+            }
+            print(result.items)
+            for file in result.items {
                 deleteGroup.enter()
                 file.delete(completion: { error in
                     if let error = error {
@@ -167,6 +159,19 @@ struct DrawingView: View {
             }
         }
 
+    }
+    
+    func uploadImageWithoutDeleting(_ image: UIImage) {
+        let storageRef = Storage.storage().reference()
+        let imageData = image.jpegData(compressionQuality: 0.8)
+        guard let imageData = imageData else { return }
+        let fileRef = storageRef.child("\(UUID().uuidString).jpg")
+        let metadata = StorageMetadata()
+        metadata.contentType = ".jpg"
+        fileRef.putData(imageData, metadata: metadata) { metadata, error in
+            // optinoally add to the database. this is the completion func.
+            print("DEBUG: sent image data.")
+        }
     }
 
     

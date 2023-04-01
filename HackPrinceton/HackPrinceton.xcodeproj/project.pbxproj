@@ -12,13 +12,13 @@
 		417EDDF829D7B85400F5379E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 417EDDF729D7B85400F5379E /* Assets.xcassets */; };
 		417EDDFB29D7B85400F5379E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 417EDDFA29D7B85400F5379E /* Preview Assets.xcassets */; };
 		417EDE0229D7BAE000F5379E /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417EDE0129D7BAE000F5379E /* DrawingView.swift */; };
-		417EDE0429D7D6AC00F5379E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 417EDE0329D7D6AC00F5379E /* GoogleService-Info.plist */; };
 		417EDE0729D7D74300F5379E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 417EDE0629D7D74300F5379E /* FirebaseFirestore */; };
 		417EDE0929D7D74300F5379E /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 417EDE0829D7D74300F5379E /* FirebaseFirestoreCombine-Community */; };
 		417EDE0B29D7D74300F5379E /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 417EDE0A29D7D74300F5379E /* FirebaseFirestoreSwift */; };
 		417EDE0D29D7D74300F5379E /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 417EDE0C29D7D74300F5379E /* FirebaseStorage */; };
 		417EDE0F29D7D74300F5379E /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 417EDE0E29D7D74300F5379E /* FirebaseStorageCombine-Community */; };
 		417EDE1129D7E0FC00F5379E /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417EDE1029D7E0FC00F5379E /* CameraView.swift */; };
+		417EDE1529D86F4C00F5379E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 417EDE1429D86F4C00F5379E /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,8 +28,8 @@
 		417EDDF729D7B85400F5379E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		417EDDFA29D7B85400F5379E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		417EDE0129D7BAE000F5379E /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
-		417EDE0329D7D6AC00F5379E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		417EDE1029D7E0FC00F5379E /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		417EDE1429D86F4C00F5379E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,9 +70,9 @@
 				417EDDF329D7B85300F5379E /* HackPrincetonApp.swift */,
 				417EDDF529D7B85300F5379E /* ContentView.swift */,
 				417EDE0129D7BAE000F5379E /* DrawingView.swift */,
+				417EDE1429D86F4C00F5379E /* GoogleService-Info.plist */,
 				417EDE1029D7E0FC00F5379E /* CameraView.swift */,
 				417EDDF729D7B85400F5379E /* Assets.xcassets */,
-				417EDE0329D7D6AC00F5379E /* GoogleService-Info.plist */,
 				417EDDF929D7B85400F5379E /* Preview Content */,
 			);
 			path = HackPrinceton;
@@ -156,7 +156,7 @@
 			files = (
 				417EDDFB29D7B85400F5379E /* Preview Assets.xcassets in Resources */,
 				417EDDF829D7B85400F5379E /* Assets.xcassets in Resources */,
-				417EDE0429D7D6AC00F5379E /* GoogleService-Info.plist in Resources */,
+				417EDE1529D86F4C00F5379E /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,7 +313,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = BL.HackPrinceton;
+				PRODUCT_BUNDLE_IDENTIFIER = BL.HackPrinceton2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -343,7 +343,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = BL.HackPrinceton;
+				PRODUCT_BUNDLE_IDENTIFIER = BL.HackPrinceton2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
