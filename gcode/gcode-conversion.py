@@ -1,3 +1,5 @@
+import numpy as np
+
 def process_chunk(chunk: str):
     # Remove G1, X, and Y commands from the chunk
     cleaned_chunk = chunk.replace('G1', '').replace('X', '').replace('Y', '')
@@ -67,3 +69,20 @@ def image_to_contours(image):
     
     # Normalize the contours and return the result
     return normalize_contours(contours)
+
+
+def contours_bounds(contours):
+    big_contour=np.concatenate(contours)
+    
+def normalize_contours(contours):
+    #Put contours in bounds from 0 to 1 by scaling them. It doesn't stretch it. Right now they're not centered.
+    combined_contours=np.concatenate(contours)
+    bounds=combined_contours.min(0),combined_contours.max(0)
+    ranges=[a-b for a,b in bounds]
+    normalized_contours=[contour-bounds[0] for contour in contours]
+    normalized_contours=[contour/max(ranges) for contour in normalized_contours]
+    for i in range(len(normalized_contours)):
+        normalized_contours[i][:,1]=1-normalized_contours[i][:,1]
+    return normalized_contours
+
+
