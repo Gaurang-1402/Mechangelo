@@ -7,7 +7,8 @@
 
 import SwiftUI
 import PencilKit
-
+import Firebase
+import FirebaseStorage
 
 struct DrawingView: View {
     @State var canvas = PKCanvasView()
@@ -58,7 +59,7 @@ struct DrawingView: View {
             let image = canvas.drawing.image(from: canvas.drawing.bounds, scale: 1)
             
             // send to firestore
-            
+            uploadImage(image: image)
             
         } label: {
             VStack {
@@ -115,6 +116,19 @@ struct DrawingView: View {
         inkTool = tool
     }
     
+    func uploadImage(image: UIImage) {
+        let storageRef = Storage.storage().reference()
+        let imageData = image.jpegData(compressionQuality: 0.8)
+        guard let imageData = imageData else { return }
+        let fileRef = storageRef.child("\(UUID().uuidString).jpg")
+        let metadata = StorageMetadata()
+        metadata.contentType = ".jpg"
+        let uploadTask = fileRef.putData(imageData, metadata: metadata) { metadata, error in
+            // optinoally add to the database. this is the completion func.
+            print("DEBUG: sent image data.")
+        }
+    }
+
     
     
 }
