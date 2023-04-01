@@ -34,6 +34,7 @@ struct DrawingView: View {
                         HStack {
                             clearButton()
                             currentModeButton()
+                            colorPicker()
                             menu()
                         }
                     }
@@ -84,16 +85,18 @@ struct DrawingView: View {
         }
     }
     
+    func colorPicker() -> some View {
+        ColorPicker(selection: $color) {
+            Label {
+                Text("Color")
+            } icon: {
+                Image(systemName: "eyedropper.fill")
+            }
+        }
+    }
+    
     func menu() -> some View {
         Menu {
-//            ColorPicker(selection: $color) {
-//                Label {
-//                    Text("Color")
-//                } icon: {
-//                    Image(systemName: "eyedropper.fill")
-//                }
-//            }
-            
             ForEach(0..<3) { idx in
                 Button(action: {switchToTool(types[idx])}) {
                     Label {
@@ -116,6 +119,16 @@ struct DrawingView: View {
         inkTool = tool
     }
     
+    // not working.
+    func deleteAllImages() {
+        let storageRef = Storage.storage().reference()
+        storageRef.delete { error in
+            if let error {
+                print("DEBUG: error \(error)")
+            }
+        }
+    }
+    
     func uploadImage(image: UIImage) {
         let storageRef = Storage.storage().reference()
         let imageData = image.jpegData(compressionQuality: 0.8)
@@ -123,10 +136,38 @@ struct DrawingView: View {
         let fileRef = storageRef.child("\(UUID().uuidString).jpg")
         let metadata = StorageMetadata()
         metadata.contentType = ".jpg"
-        let uploadTask = fileRef.putData(imageData, metadata: metadata) { metadata, error in
-            // optinoally add to the database. this is the completion func.
-            print("DEBUG: sent image data.")
+//        fileRef.putData(imageData, metadata: metadata) { metadata, error in
+//            // optinoally add to the database. this is the completion func.
+//            print("DEBUG: sent image data.")
+//        }
+        
+        storageRef.listAll { (result, error) in
+            if let error = error {
+                print("Error listing files: \(error.localizedDescription)")
+                return
+            }
+            let deleteGroup = DispatchGroup()
+            for file in result!.items {
+                deleteGroup.enter()
+                file.delete(completion: { error in
+                    if let error = error {
+                        print("Error deleting file: \(error.localizedDescription)")
+                    }
+                    deleteGroup.leave()
+                })
+            }
+            deleteGroup.notify(queue: .main) {
+                // Upload the new image
+                fileRef.putData(imageData, metadata: metadata) { (metadata, error) in
+                    if let error = error {
+                        print("Error uploading file: \(error.localizedDescription)")
+                        return
+                    }
+                    print("Image uploaded successfully!")
+                }
+            }
         }
+
     }
 
     
