@@ -33,7 +33,7 @@ struct DrawingView: View {
                 DrawingViewRepresentable(canvas: $canvas, isDraw: $isDraw, color: $color, drawingTool: $drawingTool)
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle("Drawing")
-                CanvasMenu(toolSelection: $drawingTool)
+                CanvasMenu(toolSelection: $drawingTool, color: $color)
             }
         }
     }
