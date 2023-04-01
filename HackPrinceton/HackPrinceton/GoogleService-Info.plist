@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>758117120193-ii5prjfk2f3ajq8ua91vhmrmk3tdfhnn.apps.googleusercontent.com</string>
+	<string>520674257729-nhmt7rvknkr3b7f3gajp5ivvomq5ntc8.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.758117120193-ii5prjfk2f3ajq8ua91vhmrmk3tdfhnn</string>
+	<string>com.googleusercontent.apps.520674257729-nhmt7rvknkr3b7f3gajp5ivvomq5ntc8</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBE_ExmQPvSxy_6D7ttOubNf0DCJXrIsws</string>
+	<string>AIzaSyBUHtjnxqFvEBZWjosIJKTvRwAXZA0fBWw</string>
 	<key>GCM_SENDER_ID</key>
-	<string>758117120193</string>
+	<string>520674257729</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>BL.HackPrinceton</string>
+	<string>BL.HackPrinceton2</string>
 	<key>PROJECT_ID</key>
-	<string>hackprinceton2023</string>
+	<string>hackprinceton2023-2</string>
 	<key>STORAGE_BUCKET</key>
-	<string>hackprinceton2023.appspot.com</string>
+	<string>hackprinceton2023-2.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:758117120193:ios:77c3c95b53ec705b2a3c40</string>
+	<string>1:520674257729:ios:ff3c7a2ef23fa64486cfc0</string>
 </dict>
 </plist>

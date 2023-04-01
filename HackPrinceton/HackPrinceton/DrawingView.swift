@@ -10,11 +10,18 @@ import PencilKit
 import Firebase
 import FirebaseStorage
 
+enum tool {
+case partialEraser
+case wholeEraser
+case pen
+}
+
 struct DrawingView: View {
     @State var canvas = PKCanvasView()
     @State var isDraw = true
-    @State var color = Color.black
-    @State var inkTool: PKInkingTool.InkType = .pen
+    @State var color = Color.white
+//    @State var inkTool: PKInkingTool.InkType = .pen
+    @State var drawingTool: tool = .pen
     
     let types: [PKInkingTool.InkType] = [.pencil, .pen, .marker]
     let names = ["Pencil", "Pen", "Marker"]
@@ -22,24 +29,14 @@ struct DrawingView: View {
     
     var body: some View {
         NavigationStack {
-            
-            DrawingViewRepresentable(canvas: $canvas, isDraw: $isDraw, inkTool: $inkTool, color: $color)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarLeading) {
-                        commitButton()
-                    }
-                    
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        HStack {
-                            clearButton()
-                            currentModeButton()
-                            colorPicker()
-                            menu()
-                        }
-                    }
-                }
-                .navigationTitle("Drawing")
+            ZStack(alignment: .leading) {
+                DrawingViewRepresentable(canvas: $canvas, isDraw: $isDraw, color: $color, drawingTool: $drawingTool)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationTitle("Drawing")
+                CanvasMenu(toolSelection: $drawingTool, color: $color, canvas: $canvas)
+                    .padding(.leading)
+                commitButton()
+            }
         }
     }
     
@@ -55,8 +52,24 @@ struct DrawingView: View {
     
     func commitButton() -> some View {
         Button {
+            // Create a new graphics context with a black background color
+            UIGraphicsBeginImageContextWithOptions(canvas.bounds.size, false, 1.0)
+            let context = UIGraphicsGetCurrentContext()!
+            context.setFillColor(UIColor.black.cgColor)
+            context.fill(canvas.bounds)
+
+            // Draw the canvas image onto the context
+            canvas.drawing.image(from: canvas.bounds, scale: 1).draw(in: canvas.bounds)
+
+            // Get the resulting image from the context
+            let image = UIGraphicsGetImageFromCurrentImageContext()!
+
+            // End the context
+            UIGraphicsEndImageContext()
+
             // type UIImage
-            let image = canvas.drawing.image(from: canvas.drawing.bounds, scale: 1)
+//            let image = canvas.drawing.image(from: canvas.bounds, scale: 1)
+//            image(from: canvas.drawing.bounds, scale: 1)
             
             // send to firestore
             uploadImage(image: image)
@@ -94,59 +107,50 @@ struct DrawingView: View {
         }
     }
     
-    func menu() -> some View {
-        Menu {
-            ForEach(0..<3) { idx in
-                Button(action: {switchToTool(types[idx])}) {
-                    Label {
-                        Text(names[idx])
-                    } icon: {
-                        Image(systemName: imageNames[idx])
-                    }
-                }
-            }
-        } label : {
-            VStack {
-                Image(systemName: "menubar.rectangle")
-                Text("menu")
-            }
-        }
-    }
+//    func menu() -> some View {
+////        Menu {
+////            ForEach(0..<3) { idx in
+////                Button(action: {switchToTool(types[idx])}) {
+////                    Label {
+////                        Text(names[idx])
+////                    } icon: {
+////                        Image(systemName: imageNames[idx])
+////                    }
+////                }
+////            }
+////        } label : {
+////            VStack {
+////                Image(systemName: "menubar.rectangle")
+////                Text("menu")
+////            }
+////        }
+//    }
     
-    func switchToTool(_ tool : PKInkingTool.InkType) {
-        isDraw = true
-        inkTool = tool
-    }
-    
-    // not working.
-    func deleteAllImages() {
-        let storageRef = Storage.storage().reference()
-        storageRef.delete { error in
-            if let error {
-                print("DEBUG: error \(error)")
-            }
-        }
+    func switchToTool(_ newTool: tool) {
+        drawingTool = newTool
     }
     
     func uploadImage(image: UIImage) {
         let storageRef = Storage.storage().reference()
         let imageData = image.jpegData(compressionQuality: 0.8)
         guard let imageData = imageData else { return }
-        let fileRef = storageRef.child("\(UUID().uuidString).jpg")
+        let fileRef = storageRef.child("image.jpg")
         let metadata = StorageMetadata()
         metadata.contentType = ".jpg"
-//        fileRef.putData(imageData, metadata: metadata) { metadata, error in
-//            // optinoally add to the database. this is the completion func.
-//            print("DEBUG: sent image data.")
-//        }
         
         storageRef.listAll { (result, error) in
-            if let error = error {
+            if let error {
+                uploadImageWithoutDeleting(image)
                 print("Error listing files: \(error.localizedDescription)")
                 return
             }
             let deleteGroup = DispatchGroup()
-            for file in result!.items {
+            guard let result else {
+                print("DEBUG: no files to delete")
+                return
+            }
+            print(result.items)
+            for file in result.items {
                 deleteGroup.enter()
                 file.delete(completion: { error in
                     if let error = error {
@@ -168,7 +172,21 @@ struct DrawingView: View {
         }
 
     }
+    
+    func uploadImageWithoutDeleting(_ image: UIImage) {
+        let storageRef = Storage.storage().reference()
+        let imageData = image.jpegData(compressionQuality: 0.8)
+        guard let imageData = imageData else { return }
+        let fileRef = storageRef.child("\(UUID().uuidString).jpg")
+        let metadata = StorageMetadata()
+        metadata.contentType = ".jpg"
+        fileRef.putData(imageData, metadata: metadata) { metadata, error in
+            // optinoally add to the database. this is the completion func.
+            print("DEBUG: sent image data.")
+        }
+    }
 
+    
     
     
 }
@@ -177,24 +195,40 @@ struct DrawingViewRepresentable : UIViewRepresentable {
     
     var canvas: Binding<PKCanvasView>
     var isDraw: Binding<Bool>
-    var inkTool: Binding<PKInkingTool.InkType>
+//    var inkTool: Binding<PKInkingTool.InkType>
     var color: Binding<Color>
+    var drawingTool: Binding<tool>
     
     
     var ink: PKInkingTool {
-        PKInkingTool(inkTool.wrappedValue, color: UIColor(color.wrappedValue))
+        PKInkingTool(.pen, color: UIColor(color.wrappedValue))
     }
 
-    let eraser = PKEraserTool(.bitmap)
+    let partialEraser = PKEraserTool(.bitmap)
+    let wholeEraser = PKEraserTool(.vector)
     
     func makeUIView(context: Context) -> PKCanvasView {
+        canvas.wrappedValue.backgroundColor = .black
         canvas.wrappedValue.drawingPolicy = .anyInput
-        canvas.wrappedValue.tool = isDraw.wrappedValue ? ink : eraser
+        if drawingTool.wrappedValue == .pen {
+            canvas.wrappedValue.tool = ink
+        } else if drawingTool.wrappedValue == .partialEraser {
+            canvas.wrappedValue.tool = partialEraser
+        } else {
+            canvas.wrappedValue.tool = wholeEraser
+        }
+        
         return canvas.wrappedValue
     }
     
     func updateUIView(_ uiView: PKCanvasView, context: Context) {
-        uiView.tool = isDraw.wrappedValue ? ink : eraser
+        if drawingTool.wrappedValue == .pen {
+            canvas.wrappedValue.tool = ink
+        } else if drawingTool.wrappedValue == .partialEraser {
+            canvas.wrappedValue.tool = partialEraser
+        } else {
+            canvas.wrappedValue.tool = wholeEraser
+        }
     }
     
 }
@@ -204,3 +238,21 @@ struct DrawingView_Previews: PreviewProvider {
             DrawingView()
     }
 }
+
+/*
+ //                .toolbar {
+ //                    ToolbarItemGroup(placement: .navigationBarLeading) {
+ //                        commitButton()
+ //                    }
+ //
+ //                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+ //                        HStack {
+ //                            clearButton()
+ //                            currentModeButton()
+ //                            CustomColorPicker(selectedColor: $color, isDraw: $isDraw)
+ //                            menu()
+ //                        }
+ //                    }
+ //                }
+
+ */
