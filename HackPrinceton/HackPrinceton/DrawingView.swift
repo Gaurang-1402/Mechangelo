@@ -13,10 +13,16 @@ struct DrawingView: View {
     @State var canvas = PKCanvasView()
     @State var isDraw = true
     @State var color = Color.black
+    @State var inkTool: PKInkingTool.InkType = .pen
+    
+    let types: [PKInkingTool.InkType] = [.pencil, .pen, .marker]
+    let names = ["Pencil", "Pen", "Marker"]
+    let imageNames = ["pencil", "pencil.tip", "highlighter"]
+    
     var body: some View {
         NavigationStack {
             
-            DrawingViewRepresentable(canvas: $canvas, isDraw: $isDraw)
+            DrawingViewRepresentable(canvas: $canvas, isDraw: $isDraw, inkTool: $inkTool, color: $color)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarLeading) {
@@ -37,6 +43,9 @@ struct DrawingView: View {
     
     func saveButton() -> some View {
         Button {
+            // type UIImage
+            let image = canvas.drawing.image(from: canvas.drawing.bounds, scale: 1)
+            
         } label: {
             VStack {
                 Image(systemName: "square.and.arrow.up.fill")
@@ -60,33 +69,52 @@ struct DrawingView: View {
     
     func menu() -> some View {
         Menu {
-            ColorPicker(selection: $color) {
-                Label {
-                    Text("Color")
-                } icon: {
-                    Image(systemName: "eyedropper.fill")
-                }
-            }
+//            ColorPicker(selection: $color) {
+//                Label {
+//                    Text("Color")
+//                } icon: {
+//                    Image(systemName: "eyedropper.fill")
+//                }
+//            }
             
-            Button(action: {}) {
-                Label {
-                    Text("Pen")
-                } icon: {
-                    Image(systemName: "pencil.tip")
+            ForEach(0..<3) { idx in
+                Button(action: {switchToTool(types[idx])}) {
+                    Label {
+                        Text(names[idx])
+                    } icon: {
+                        Image(systemName: imageNames[idx])
+                    }
                 }
             }
-
         } label : {
-            Image(systemName: "dots")
+            VStack {
+                Image(systemName: "menubar.rectangle")
+                Text("menu")
+            }
         }
     }
+    
+    func switchToTool(_ tool : PKInkingTool.InkType) {
+        isDraw = true
+        inkTool = tool
+    }
+    
+    
+    
 }
 
 struct DrawingViewRepresentable : UIViewRepresentable {
+    
     var canvas: Binding<PKCanvasView>
     var isDraw: Binding<Bool>
+    var inkTool: Binding<PKInkingTool.InkType>
+    var color: Binding<Color>
     
-    let ink = PKInkingTool(.marker, color: .black)
+    
+    var ink: PKInkingTool {
+        PKInkingTool(inkTool.wrappedValue, color: UIColor(color.wrappedValue))
+    }
+
     let eraser = PKEraserTool(.bitmap)
     
     func makeUIView(context: Context) -> PKCanvasView {
