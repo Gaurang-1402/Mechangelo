@@ -1,0 +1,52 @@
+name: File Labeler
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+      - name: Label the pull request based on files changed
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo, number: pr_number } = context.issue;
+            const github = context.github;
+            
+            // Get the list of files changed in the pull request
+            const { data: files } = await github.pulls.listFiles({
+              owner,
+              repo,
+              pull_number: pr_number
+            });
+            
+            // Define the labels you want to apply based on the files changed
+            const labelMapping = {
+              'gcode': ['gcode/*'],
+              'led_code': ['led_code/*']
+              'backend_scripts': ['backend_scripts/*']
+            };
+            
+            const labelsToAdd = [];
+            for (const [label, patterns] of Object.entries(labelMapping)) {
+              for (const pattern of patterns) {
+                if (files.some(file => file.filename.startsWith(pattern))) {
+                  labelsToAdd.push(label);
+                  break;
+                }
+              }
+            }
+            
+            // Add the labels to the pull request
+            if (labelsToAdd.length > 0) {
+              await github.issues.addLabels({
+                owner,
+                repo,
+                issue_number: pr_number,
+                labels: labelsToAdd
+              });
+            }
