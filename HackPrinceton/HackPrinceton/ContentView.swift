@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
+import PencilKit
 
 struct ContentView: View {
-    
+    @State var canvas = PKCanvasView()
     var body: some View {
-        DrawingView()
-//       CanvasMenu()
+        HStack {
+            DrawingView(canvas: $canvas)
+            SideCommitView(canvas: $canvas)
+                .frame(width: 300)
+        }
+        .ignoresSafeArea()
+        //       CanvasMenu()
             
     }
 }
