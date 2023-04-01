@@ -22,6 +22,7 @@ struct GrowingButton: ButtonStyle {
 }
 
 struct SideCommitView: View {
+    
     @Binding var canvas: PKCanvasView
     var body: some View {
         ZStack {

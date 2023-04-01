@@ -10,9 +10,12 @@ import PencilKit
 
 struct ContentView: View {
     @State var canvas = PKCanvasView()
+    @State var isDraw = true
+    @State var color = Color.white
+    @State var drawingTool: tool = .pen
     var body: some View {
         HStack {
-            DrawingView(canvas: $canvas)
+            DrawingView(canvas: $canvas, isDraw: $isDraw, color: $color, drawingTool: $drawingTool)
             SideCommitView(canvas: $canvas)
                 .frame(width: 300)
         }

@@ -18,10 +18,9 @@ case pen
 
 struct DrawingView: View {
     @Binding var canvas: PKCanvasView
-    @State var isDraw = true
-    @State var color = Color.white
-//    @State var inkTool: PKInkingTool.InkType = .pen
-    @State var drawingTool: tool = .pen
+    @Binding var isDraw: Bool
+    @Binding var color: Color
+    @Binding var drawingTool: tool 
     
     let types: [PKInkingTool.InkType] = [.pencil, .pen, .marker]
     let names = ["Pencil", "Pen", "Marker"]
