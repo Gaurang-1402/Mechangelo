@@ -19,7 +19,7 @@ case pen
 struct DrawingView: View {
     @State var canvas = PKCanvasView()
     @State var isDraw = true
-    @State var color = Color.black
+    @State var color = Color.white
 //    @State var inkTool: PKInkingTool.InkType = .pen
     @State var drawingTool: tool = .pen
     
@@ -29,11 +29,13 @@ struct DrawingView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack(alignment: .leading) {
                 DrawingViewRepresentable(canvas: $canvas, isDraw: $isDraw, color: $color, drawingTool: $drawingTool)
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle("Drawing")
-                CanvasMenu(toolSelection: $drawingTool, color: $color)
+                CanvasMenu(toolSelection: $drawingTool, color: $color, canvas: $canvas)
+                    .padding(.leading)
+                commitButton()
             }
         }
     }
@@ -51,7 +53,8 @@ struct DrawingView: View {
     func commitButton() -> some View {
         Button {
             // type UIImage
-            let image = canvas.drawing.image(from: canvas.drawing.bounds, scale: 1)
+            let image = canvas.drawing.image(from: canvas.bounds, scale: 1)
+//            image(from: canvas.drawing.bounds, scale: 1)
             
             // send to firestore
             uploadImage(image: image)
