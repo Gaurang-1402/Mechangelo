@@ -26,11 +26,12 @@ struct DrawingView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarLeading) {
-                        saveButton()
+                        commitButton()
                     }
                     
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         HStack {
+                            clearButton()
                             currentModeButton()
                             menu()
                         }
@@ -41,15 +42,30 @@ struct DrawingView: View {
         
     }
     
-    func saveButton() -> some View {
+    func clearButton() -> some View {
+        Button {
+            canvas.drawing = PKDrawing()
+        } label: {
+            Text("CLEAR")
+                .foregroundColor(.red)
+        }
+
+    }
+    
+    func commitButton() -> some View {
         Button {
             // type UIImage
             let image = canvas.drawing.image(from: canvas.drawing.bounds, scale: 1)
             
+            // send to firestore
+            c
+            
         } label: {
             VStack {
                 Image(systemName: "square.and.arrow.up.fill")
-                Text("Share")
+                Text("Draw My \nLight Painting!")
+                    .fixedSize(horizontal: false, vertical: true)
+
             }
         }
     }
