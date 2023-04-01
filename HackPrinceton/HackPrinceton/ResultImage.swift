@@ -11,10 +11,11 @@ import FirebaseStorage
 struct ResultImage: View {
     @Binding var lastURL: String
     @State var keepPolling = true
-    @State var timer = Timer()
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+
     var body: some View {
         VStack {
-            Text("")
+            EmptyView()
             if let url = URL(string: lastURL) {
                 AsyncImage(url: URL(string: lastURL), content: { image in
                     image
@@ -23,16 +24,13 @@ struct ResultImage: View {
                 })
             }
         }
-        .onAppear {
-            print("link is \(lastURL)")
-            Timer.init(timeInterval: 1.0, repeats: true, block: { (timer) in
-                print("\n--------------------TIMER FIRED--------------\n")
-//                pollServer()
+        .onReceive(timer) { _ in
+            print("timer fired")
+            pollServer()
 
-//                if !keepPolling {
-//                    timer.invalidate()
-//                }
-            })
+            if !keepPolling {
+                timer.upstream.connect().cancel()
+            }
         }
     }
     
@@ -61,30 +59,7 @@ struct ResultImage: View {
                     }
                 }
             }
-            pollGroup.notify(queue: .main) {
-                // Upload the new image
-                //                fileRef.putData(imageData, metadata: metadata) { (metadata, error) in
-                //                    if let error = error {
-                //                        print("Error uploading file: \(error.localizedDescription)")
-                //                        return
-                //                    }
-                //                    print("Image uploaded successfully!")
-                //                }
-            }
         }
-        var url = ""
-        
-        // get the url that is there
-        // once you get it,
-        //        let imageData = image.jpegData(compressionQuality: 0.8)
-        //        guard let imageData = imageData else { return }
-        //        let fileRef = storageRef.child("\(UUID().uuidString).jpg")
-        //        let metadata = StorageMetadata()
-        //        metadata.contentType = ".jpg"
-        //        fileRef.putData(imageData, metadata: metadata) { metadata, error in
-        //            // optinoally add to the database. this is the completion func.
-        //            print("DEBUG: sent image data.")
-        //        }
     }
 }
 //
