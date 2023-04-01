@@ -41,7 +41,6 @@ struct DrawingView: View {
                 }
                 .navigationTitle("Drawing")
         }
-        
     }
     
     func clearButton() -> some View {

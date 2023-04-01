@@ -18,6 +18,7 @@
 		417EDE0B29D7D74300F5379E /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 417EDE0A29D7D74300F5379E /* FirebaseFirestoreSwift */; };
 		417EDE0D29D7D74300F5379E /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 417EDE0C29D7D74300F5379E /* FirebaseStorage */; };
 		417EDE0F29D7D74300F5379E /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 417EDE0E29D7D74300F5379E /* FirebaseStorageCombine-Community */; };
+		417EDE1129D7E0FC00F5379E /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417EDE1029D7E0FC00F5379E /* CameraView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		417EDDFA29D7B85400F5379E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		417EDE0129D7BAE000F5379E /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		417EDE0329D7D6AC00F5379E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		417EDE1029D7E0FC00F5379E /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				417EDDF329D7B85300F5379E /* HackPrincetonApp.swift */,
 				417EDDF529D7B85300F5379E /* ContentView.swift */,
 				417EDE0129D7BAE000F5379E /* DrawingView.swift */,
+				417EDE1029D7E0FC00F5379E /* CameraView.swift */,
 				417EDDF729D7B85400F5379E /* Assets.xcassets */,
 				417EDE0329D7D6AC00F5379E /* GoogleService-Info.plist */,
 				417EDDF929D7B85400F5379E /* Preview Content */,
@@ -167,6 +170,7 @@
 				417EDE0229D7BAE000F5379E /* DrawingView.swift in Sources */,
 				417EDDF629D7B85300F5379E /* ContentView.swift in Sources */,
 				417EDDF429D7B85300F5379E /* HackPrincetonApp.swift in Sources */,
+				417EDE1129D7E0FC00F5379E /* CameraView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
