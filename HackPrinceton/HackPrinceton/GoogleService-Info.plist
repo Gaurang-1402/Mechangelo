@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>758117120193-ii5prjfk2f3ajq8ua91vhmrmk3tdfhnn.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.758117120193-ii5prjfk2f3ajq8ua91vhmrmk3tdfhnn</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBE_ExmQPvSxy_6D7ttOubNf0DCJXrIsws</string>
+	<key>GCM_SENDER_ID</key>
+	<string>758117120193</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>BL.HackPrinceton</string>
+	<key>PROJECT_ID</key>
+	<string>hackprinceton2023</string>
+	<key>STORAGE_BUCKET</key>
+	<string>hackprinceton2023.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:758117120193:ios:77c3c95b53ec705b2a3c40</string>
+</dict>
+</plist>

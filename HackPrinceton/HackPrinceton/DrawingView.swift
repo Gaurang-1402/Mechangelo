@@ -58,7 +58,7 @@ struct DrawingView: View {
             let image = canvas.drawing.image(from: canvas.drawing.bounds, scale: 1)
             
             // send to firestore
-            c
+            
             
         } label: {
             VStack {
