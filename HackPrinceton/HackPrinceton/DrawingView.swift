@@ -52,8 +52,23 @@ struct DrawingView: View {
     
     func commitButton() -> some View {
         Button {
+            // Create a new graphics context with a black background color
+            UIGraphicsBeginImageContextWithOptions(canvas.bounds.size, false, 1.0)
+            let context = UIGraphicsGetCurrentContext()!
+            context.setFillColor(UIColor.black.cgColor)
+            context.fill(canvas.bounds)
+
+            // Draw the canvas image onto the context
+            canvas.drawing.image(from: canvas.bounds, scale: 1).draw(in: canvas.bounds)
+
+            // Get the resulting image from the context
+            let image = UIGraphicsGetImageFromCurrentImageContext()!
+
+            // End the context
+            UIGraphicsEndImageContext()
+
             // type UIImage
-            let image = canvas.drawing.image(from: canvas.bounds, scale: 1)
+//            let image = canvas.drawing.image(from: canvas.bounds, scale: 1)
 //            image(from: canvas.drawing.bounds, scale: 1)
             
             // send to firestore
