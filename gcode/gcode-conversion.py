@@ -86,3 +86,61 @@ def normalize_contours(contours):
     return normalized_contours
 
 
+
+def display_contours(contours):
+    #Assumes the contours are normalized    
+    display_image(contours_to_image(contours,scale=1000))
+    
+    
+def display_contours(contours):
+    # Assumes the contours are normalized
+    # Convert the normalized contours to an image with a specified scale
+    contour_image = contours_to_image(contours, scale=1000)
+    
+    # Display the contour image
+    display_image(contour_image)
+
+def fix_errors():
+    # Clean warnings and errors from the robot arm
+    arm.clean_warn()
+    arm.clean_error()
+    
+    # Enable motion for the robot arm
+    arm.motion_enable(True)
+    
+    # Set the mode and state of the robot arm
+    arm.set_mode(0)
+    arm.set_state(0)
+
+
+def add_joint_angle(joint, angle, speed=None):
+    # Add the given angle to the current angle of the specified joint
+    angle += arm.angles[joint]
+    
+    # Set the new angle for the joint
+    set_joint_angle(joint, angle, speed)
+
+def set_angles(angles, speed=None):
+    # If speed is not provided, use the global speed value
+    if speed is None:
+        speed = globals()['speed']
+    
+    # Set the servo angles for the robot arm
+    arm.set_servo_angle(angle=angles, speed=speed, radius=20, wait=True, mvacc=acc)
+
+def set_joint_angle(joint, angle, speed=None):
+    # Get the current angles of the robot arm
+    angles = arm.angles
+    
+    # Update the specified joint angle
+    angles[joint] = angle
+    
+    # Set the new angles for the robot arm
+    set_angles(angles, speed=speed)
+        
+def set_suction(mode: bool):
+    # Check if the mode variable is a boolean
+    assert isinstance(mode, bool)
+    
+    # Set the suction cup mode for the robot arm
+    arm.set_suction_cup(mode, False)
