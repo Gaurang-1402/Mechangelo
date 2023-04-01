@@ -3,8 +3,8 @@ from firebase_admin import credentials
 from firebase_admin import storage
 import requests
 from io import BytesIO
-import matplotlib.pyplot as plt
 import time
+from PIL import Image
 
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate('.\\serviceAccountKey.json')
@@ -15,6 +15,7 @@ bucket = storage.bucket("hackprinceton2023-2.appspot.com")
 
 # Keep track of the last modified time of the image file
 last_modified = None
+
 
 while True:
     # List all files in the bucket
@@ -32,3 +33,5 @@ while True:
 
     # Wait for 5 seconds before checking again
     time.sleep(5)
+
+
