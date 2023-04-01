@@ -10,11 +10,18 @@ import PencilKit
 import Firebase
 import FirebaseStorage
 
+enum tool {
+case partialEraser
+case wholeEraser
+case pen
+}
+
 struct DrawingView: View {
     @State var canvas = PKCanvasView()
     @State var isDraw = true
     @State var color = Color.black
-    @State var inkTool: PKInkingTool.InkType = .pen
+//    @State var inkTool: PKInkingTool.InkType = .pen
+    @State var drawingTool: tool = .pen
     
     let types: [PKInkingTool.InkType] = [.pencil, .pen, .marker]
     let names = ["Pencil", "Pen", "Marker"]
@@ -22,24 +29,12 @@ struct DrawingView: View {
     
     var body: some View {
         NavigationStack {
-            
-            DrawingViewRepresentable(canvas: $canvas, isDraw: $isDraw, inkTool: $inkTool, color: $color)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarLeading) {
-                        commitButton()
-                    }
-                    
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        HStack {
-                            clearButton()
-                            currentModeButton()
-                            colorPicker()
-                            menu()
-                        }
-                    }
-                }
-                .navigationTitle("Drawing")
+            ZStack {
+                DrawingViewRepresentable(canvas: $canvas, isDraw: $isDraw, color: $color, drawingTool: $drawingTool)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationTitle("Drawing")
+                CanvasMenu(toolSelection: $drawingTool)
+            }
         }
     }
     
@@ -94,28 +89,27 @@ struct DrawingView: View {
         }
     }
     
-    func menu() -> some View {
-        Menu {
-            ForEach(0..<3) { idx in
-                Button(action: {switchToTool(types[idx])}) {
-                    Label {
-                        Text(names[idx])
-                    } icon: {
-                        Image(systemName: imageNames[idx])
-                    }
-                }
-            }
-        } label : {
-            VStack {
-                Image(systemName: "menubar.rectangle")
-                Text("menu")
-            }
-        }
-    }
+//    func menu() -> some View {
+////        Menu {
+////            ForEach(0..<3) { idx in
+////                Button(action: {switchToTool(types[idx])}) {
+////                    Label {
+////                        Text(names[idx])
+////                    } icon: {
+////                        Image(systemName: imageNames[idx])
+////                    }
+////                }
+////            }
+////        } label : {
+////            VStack {
+////                Image(systemName: "menubar.rectangle")
+////                Text("menu")
+////            }
+////        }
+//    }
     
-    func switchToTool(_ tool : PKInkingTool.InkType) {
-        isDraw = true
-        inkTool = tool
+    func switchToTool(_ newTool: tool) {
+        drawingTool = newTool
     }
     
     func uploadImage(image: UIImage) {
@@ -176,30 +170,47 @@ struct DrawingView: View {
 
     
     
+    
 }
 
 struct DrawingViewRepresentable : UIViewRepresentable {
     
     var canvas: Binding<PKCanvasView>
     var isDraw: Binding<Bool>
-    var inkTool: Binding<PKInkingTool.InkType>
+//    var inkTool: Binding<PKInkingTool.InkType>
     var color: Binding<Color>
+    var drawingTool: Binding<tool>
     
     
     var ink: PKInkingTool {
-        PKInkingTool(inkTool.wrappedValue, color: UIColor(color.wrappedValue))
+        PKInkingTool(.pen, color: UIColor(color.wrappedValue))
     }
 
-    let eraser = PKEraserTool(.bitmap)
+    let partialEraser = PKEraserTool(.bitmap)
+    let wholeEraser = PKEraserTool(.vector)
     
     func makeUIView(context: Context) -> PKCanvasView {
+        canvas.wrappedValue.backgroundColor = .black
         canvas.wrappedValue.drawingPolicy = .anyInput
-        canvas.wrappedValue.tool = isDraw.wrappedValue ? ink : eraser
+        if drawingTool.wrappedValue == .pen {
+            canvas.wrappedValue.tool = ink
+        } else if drawingTool.wrappedValue == .partialEraser {
+            canvas.wrappedValue.tool = partialEraser
+        } else {
+            canvas.wrappedValue.tool = wholeEraser
+        }
+        
         return canvas.wrappedValue
     }
     
     func updateUIView(_ uiView: PKCanvasView, context: Context) {
-        uiView.tool = isDraw.wrappedValue ? ink : eraser
+        if drawingTool.wrappedValue == .pen {
+            canvas.wrappedValue.tool = ink
+        } else if drawingTool.wrappedValue == .partialEraser {
+            canvas.wrappedValue.tool = partialEraser
+        } else {
+            canvas.wrappedValue.tool = wholeEraser
+        }
     }
     
 }
@@ -209,3 +220,21 @@ struct DrawingView_Previews: PreviewProvider {
             DrawingView()
     }
 }
+
+/*
+ //                .toolbar {
+ //                    ToolbarItemGroup(placement: .navigationBarLeading) {
+ //                        commitButton()
+ //                    }
+ //
+ //                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+ //                        HStack {
+ //                            clearButton()
+ //                            currentModeButton()
+ //                            CustomColorPicker(selectedColor: $color, isDraw: $isDraw)
+ //                            menu()
+ //                        }
+ //                    }
+ //                }
+
+ */
