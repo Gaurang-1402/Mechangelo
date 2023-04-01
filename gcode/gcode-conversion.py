@@ -144,3 +144,87 @@ def set_suction(mode: bool):
     
     # Set the suction cup mode for the robot arm
     arm.set_suction_cup(mode, False)
+    
+    
+def do_the_square_dance():
+    # Move the robot arm through all 8 corners of the cube
+    for x in [0, 1]:
+        for y in [0, 1]:
+            for z in [0, 1]:
+                set_pos_in_bounds(x, y, z)
+
+def set_pos_in_bounds(x, y, z, wait=False):
+    # Define the robot arm's bounds
+    robot_bounds = [[200, 380], [-170, 170], [80, 420]]
+
+    # Blend the input coordinates with the robot_bounds
+    x = blend(*robot_bounds[0], x)
+    y = blend(*robot_bounds[1], y)
+    z = blend(*robot_bounds[2], z)
+
+    # Set the position of the robot arm within the bounds
+    arm.set_position(x, y, z, wait=wait, mvacc=1000, radius=10)
+
+def set_xy(x, y, wait=False):
+    # Ensure x and y are within the range [0, 1]
+    assert 0 <= x <= 1
+    assert 0 <= y <= 1
+
+    # Set the robot arm's position within the bounds
+    set_pos_in_bounds(0.5, x, y, wait=wait)
+
+def connect_robot():
+    import os
+    import sys
+    import time
+    import math
+
+    # Make the arm object available globally
+    global arm
+
+    # Import the XArmAPI
+    from xarm.wrapper import XArmAPI
+
+    # Disconnect the robot arm if it's already connected
+    if 'arm' in dir():
+        arm.disconnect()
+
+    # Set the robot arm's IP address
+    ip = '192.168.1.162'
+
+    # Connect to the robot arm using its IP address
+    arm = XArmAPI(ip)
+
+    # Enable motion, set mode, and state for the robot arm
+    arm.motion_enable(enable=True)
+    arm.set_mode(0)
+    arm.set_state(state=0)
+
+    # Set the robot arm's speed and acceleration
+    speed = 500
+    acc = 240
+    arm.set_reduced_max_joint_speed(50)
+
+def get_position():
+    # Get and return the current position of the robot arm
+    return arm.get_position()[1][:3]
+
+def go_home():
+    # Move the robot arm to its home position
+    arm.move_gohome()
+
+def draw_robot_contours(contours):
+    # Assume contour is normalized 0-to-1 [[x, y], [x, y]...]
+    display_contours(contours)
+
+    # Iterate through the contours and move the robot arm along them
+    for contour in contours:
+        for x, y in contour[:-1]:
+            y = 1 - y
+            fix_errors()
+            set_xy(x, y, wait=True)
+
+        # Move the robot arm to the last point in the contour
+        fix_errors()
+        set_xy(*contour[-1], wait=True)
+
