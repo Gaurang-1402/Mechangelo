@@ -17,27 +17,26 @@ case pen
 }
 
 struct DrawingView: View {
-    @State var canvas = PKCanvasView()
-    @State var isDraw = true
-    @State var color = Color.white
-//    @State var inkTool: PKInkingTool.InkType = .pen
-    @State var drawingTool: tool = .pen
+    @Binding var canvas: PKCanvasView
+    @Binding var isDraw: Bool
+    @Binding var color: Color
+    @Binding var drawingTool: tool 
     
     let types: [PKInkingTool.InkType] = [.pencil, .pen, .marker]
     let names = ["Pencil", "Pen", "Marker"]
     let imageNames = ["pencil", "pencil.tip", "highlighter"]
     
     var body: some View {
-        NavigationStack {
+//        NavigationStack {
             ZStack(alignment: .leading) {
                 DrawingViewRepresentable(canvas: $canvas, isDraw: $isDraw, color: $color, drawingTool: $drawingTool)
-                    .navigationBarTitleDisplayMode(.inline)
-                    .navigationTitle("Drawing")
+                    .aspectRatio(contentMode: .fill)
+                
                 CanvasMenu(toolSelection: $drawingTool, color: $color, canvas: $canvas)
                     .padding(.leading)
-                commitButton()
+//                commitButton()
             }
-        }
+//        }
     }
     
     func clearButton() -> some View {
@@ -50,39 +49,6 @@ struct DrawingView: View {
 
     }
     
-    func commitButton() -> some View {
-        Button {
-            // Create a new graphics context with a black background color
-            UIGraphicsBeginImageContextWithOptions(canvas.bounds.size, false, 1.0)
-            let context = UIGraphicsGetCurrentContext()!
-            context.setFillColor(UIColor.black.cgColor)
-            context.fill(canvas.bounds)
-
-            // Draw the canvas image onto the context
-            canvas.drawing.image(from: canvas.bounds, scale: 1).draw(in: canvas.bounds)
-
-            // Get the resulting image from the context
-            let image = UIGraphicsGetImageFromCurrentImageContext()!
-
-            // End the context
-            UIGraphicsEndImageContext()
-
-            // type UIImage
-//            let image = canvas.drawing.image(from: canvas.bounds, scale: 1)
-//            image(from: canvas.drawing.bounds, scale: 1)
-            
-            // send to firestore
-            uploadImage(image: image)
-            
-        } label: {
-            VStack {
-                Image(systemName: "square.and.arrow.up.fill")
-                Text("Draw My \nLight Painting!")
-                    .fixedSize(horizontal: false, vertical: true)
-
-            }
-        }
-    }
     
     func currentModeButton() -> some View {
         Button {
@@ -107,84 +73,10 @@ struct DrawingView: View {
         }
     }
     
-//    func menu() -> some View {
-////        Menu {
-////            ForEach(0..<3) { idx in
-////                Button(action: {switchToTool(types[idx])}) {
-////                    Label {
-////                        Text(names[idx])
-////                    } icon: {
-////                        Image(systemName: imageNames[idx])
-////                    }
-////                }
-////            }
-////        } label : {
-////            VStack {
-////                Image(systemName: "menubar.rectangle")
-////                Text("menu")
-////            }
-////        }
-//    }
-    
     func switchToTool(_ newTool: tool) {
         drawingTool = newTool
     }
     
-    func uploadImage(image: UIImage) {
-        let storageRef = Storage.storage().reference()
-        let imageData = image.jpegData(compressionQuality: 0.8)
-        guard let imageData = imageData else { return }
-        let fileRef = storageRef.child("image.jpg")
-        let metadata = StorageMetadata()
-        metadata.contentType = ".jpg"
-        
-        storageRef.listAll { (result, error) in
-            if let error {
-                uploadImageWithoutDeleting(image)
-                print("Error listing files: \(error.localizedDescription)")
-                return
-            }
-            let deleteGroup = DispatchGroup()
-            guard let result else {
-                print("DEBUG: no files to delete")
-                return
-            }
-            print(result.items)
-            for file in result.items {
-                deleteGroup.enter()
-                file.delete(completion: { error in
-                    if let error = error {
-                        print("Error deleting file: \(error.localizedDescription)")
-                    }
-                    deleteGroup.leave()
-                })
-            }
-            deleteGroup.notify(queue: .main) {
-                // Upload the new image
-                fileRef.putData(imageData, metadata: metadata) { (metadata, error) in
-                    if let error = error {
-                        print("Error uploading file: \(error.localizedDescription)")
-                        return
-                    }
-                    print("Image uploaded successfully!")
-                }
-            }
-        }
-
-    }
-    
-    func uploadImageWithoutDeleting(_ image: UIImage) {
-        let storageRef = Storage.storage().reference()
-        let imageData = image.jpegData(compressionQuality: 0.8)
-        guard let imageData = imageData else { return }
-        let fileRef = storageRef.child("\(UUID().uuidString).jpg")
-        let metadata = StorageMetadata()
-        metadata.contentType = ".jpg"
-        fileRef.putData(imageData, metadata: metadata) { metadata, error in
-            // optinoally add to the database. this is the completion func.
-            print("DEBUG: sent image data.")
-        }
-    }
 
     
     
@@ -233,11 +125,11 @@ struct DrawingViewRepresentable : UIViewRepresentable {
     
 }
 
-struct DrawingView_Previews: PreviewProvider {
-    static var previews: some View {
-            DrawingView()
-    }
-}
+//struct DrawingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//            DrawingView()
+//    }
+//}
 
 /*
  //                .toolbar {
