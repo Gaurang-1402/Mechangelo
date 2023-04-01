@@ -21,6 +21,7 @@
 		417EDE1529D86F4C00F5379E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 417EDE1429D86F4C00F5379E /* GoogleService-Info.plist */; };
 		417EDE1729D8722200F5379E /* CustomColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417EDE1629D8722200F5379E /* CustomColorPicker.swift */; };
 		417EDE1929D8906C00F5379E /* SideCommitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417EDE1829D8906C00F5379E /* SideCommitView.swift */; };
+		417EDE1B29D8C1BB00F5379E /* ResultImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417EDE1A29D8C1BB00F5379E /* ResultImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		417EDE1429D86F4C00F5379E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		417EDE1629D8722200F5379E /* CustomColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorPicker.swift; sourceTree = "<group>"; };
 		417EDE1829D8906C00F5379E /* SideCommitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideCommitView.swift; sourceTree = "<group>"; };
+		417EDE1A29D8C1BB00F5379E /* ResultImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 			children = (
 				417EDDF329D7B85300F5379E /* HackPrincetonApp.swift */,
 				417EDDF529D7B85300F5379E /* ContentView.swift */,
+				417EDE1A29D8C1BB00F5379E /* ResultImage.swift */,
 				417EDE0129D7BAE000F5379E /* DrawingView.swift */,
 				417EDE1829D8906C00F5379E /* SideCommitView.swift */,
 				417EDE1629D8722200F5379E /* CustomColorPicker.swift */,
@@ -176,6 +179,7 @@
 				417EDE1929D8906C00F5379E /* SideCommitView.swift in Sources */,
 				417EDE1729D8722200F5379E /* CustomColorPicker.swift in Sources */,
 				417EDE0229D7BAE000F5379E /* DrawingView.swift in Sources */,
+				417EDE1B29D8C1BB00F5379E /* ResultImage.swift in Sources */,
 				417EDDF629D7B85300F5379E /* ContentView.swift in Sources */,
 				417EDDF429D7B85300F5379E /* HackPrincetonApp.swift in Sources */,
 				417EDE1129D7E0FC00F5379E /* CameraView.swift in Sources */,

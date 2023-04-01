@@ -32,8 +32,7 @@ struct DrawingView: View {
                 DrawingViewRepresentable(canvas: $canvas, isDraw: $isDraw, color: $color, drawingTool: $drawingTool)
                     .aspectRatio(contentMode: .fill)
                 
-                CanvasMenu(toolSelection: $drawingTool, color: $color, canvas: $canvas)
-                    .padding(.leading)
+        
 //                commitButton()
             }
 //        }

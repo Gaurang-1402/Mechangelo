@@ -24,30 +24,38 @@ struct GrowingButton: ButtonStyle {
 struct SideCommitView: View {
     
     @Binding var canvas: PKCanvasView
+    @Binding var isDraw: Bool
+    @Binding var color: Color
+    @Binding var drawingTool: tool
+    @Binding var showingSecondScreen: Bool
     var body: some View {
         ZStack {
-            Color("MenuColor")
+            Color("CustomBrown")
             VStack {
+                CanvasMenu(toolSelection: $drawingTool, color: $color, canvas: $canvas)
+                    .padding(.leading)
+                
                 Image("MenuLogo")
                     .resizable()
                     .scaledToFit()
                     .aspectRatio(contentMode: .fit)
                     .padding(.vertical,50)
                     .padding(.horizontal, 10)
-                
-                Spacer()
-                Button {
-                    
-                } label: {
-                    Text("Upload Image")
-                }
-                .padding(50)
-                .buttonStyle(GrowingButton())
-                
+//
+//                Spacer()
+//                Button {
+//
+//                } label: {
+//                    Text("Upload Image")
+//                }
+//                .padding(50)
+//                .buttonStyle(GrowingButton())
+//
                 commitButton()
-                .padding(50)
+                    .multilineTextAlignment(.center)
+//                .padding(50)
                 .buttonStyle(GrowingButton())
-                .padding(.bottom, 100)
+                .padding(.bottom, 10)
                 
             }
         }
@@ -74,16 +82,16 @@ struct SideCommitView: View {
             // send to firestore
             uploadImage(image: image)
             
+            // start listening for the resulting image
+            
         } label: {
             VStack {
-                Image(systemName: "square.and.arrow.up.fill")
                 Text("Draw My \nLight Painting!")
                     .fixedSize(horizontal: false, vertical: true)
 
             }
         }
     }
-    
     
     func uploadImage(image: UIImage) {
         let storageRef = Storage.storage().reference()
@@ -142,8 +150,8 @@ struct SideCommitView: View {
     }
 }
 
-struct SideCommitView_Previews: PreviewProvider {
-    static var previews: some View {
-        SideCommitView(canvas: .constant(PKCanvasView()))
-    }
-}
+//struct SideCommitView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SideCommitView(canvas: .constant(PKCanvasView()))
+//    }
+//}

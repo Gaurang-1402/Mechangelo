@@ -27,7 +27,7 @@ struct CanvasMenu: View {
     
     var body: some View {
         VStack(alignment: .center) {
-            Text("Brush Color")
+            Text("Color")
                 .fontWeight(.black)
             HStack(spacing: 0) {
                 CustomColorPicker(selectedColor: $color, drawingTool: $toolSelection)
@@ -35,6 +35,7 @@ struct CanvasMenu: View {
             
             Text("Tools")
                 .fontWeight(.black)
+                .padding(.bottom)
             toolSection()
         }
         .padding(30)
@@ -94,12 +95,12 @@ struct CustomColorPicker: View {
     let colors: [Color] = [.white,
                            .purple,
                            .red,
-                           .orange,
-                           .yellow,
-                           .green]
-    let colors2: [Color] = [.pink,
-                            .cyan,
-                            .mint,
+                           .orange]
+    let colors2: [Color] = [.yellow,
+                            .green,
+                            .pink,
+                            .cyan]
+    let colors3: [Color] = [.mint,
                             .indigo,
                             .teal,
                             .blue]
@@ -112,6 +113,11 @@ struct CustomColorPicker: View {
                 }
                 VStack(spacing: 20) {
                     ForEach(colors2, id: \.self) { color in
+                        button(color: color)
+                    }
+                }
+                VStack(spacing: 20) {
+                    ForEach(colors3, id: \.self) { color in
                         button(color: color)
                     }
                 }
