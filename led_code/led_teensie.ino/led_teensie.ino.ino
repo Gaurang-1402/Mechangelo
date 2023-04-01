@@ -1,7 +1,7 @@
 // Define the pins for the LED
-const int redPin = 15;
-const int greenPin = 14;
-const int bluePin = 37;
+const int redPin = 9;
+const int greenPin = 10;
+const int bluePin = 11;
 
 void setup() {
   // Start the serial communication
@@ -18,25 +18,11 @@ void loop() {
     // Do nothing
   }
   // Read the input bytes and convert to integers
-  int redValue = Serial.parseInt();
-  int greenValue = Serial.parseInt();
-  int blueValue = Serial.parseInt();
+  int redValue = 255-Serial.parseInt();
+  int greenValue = 255-Serial.parseInt();
+  int blueValue = 255-Serial.parseInt();
   // Map the values from 0-255 to 0-1023 (for the Teensy's 10-bit PWM)
 
-  redValue = 255 - redValue;
-  greenValue = 255 - greenValue;
-  blueValue = 255 - blueValue;
-  
-
-  // full red is 0, 255, 255
-  redValue = map(redValue, 0, 255, 0, 1023);
-
-  // full green is 255, 0, 255
-  greenValue = map(greenValue, 0, 255, 0, 1023);
-
-  // full blue is 255, 255, 0
-  blueValue = map(blueValue, 0, 255, 0, 1023);
-  
   // Set the PWM values for each pin
   analogWrite(redPin, redValue);
   analogWrite(greenPin, greenValue);
