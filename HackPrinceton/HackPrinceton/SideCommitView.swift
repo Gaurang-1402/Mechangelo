@@ -83,6 +83,7 @@ struct SideCommitView: View {
             uploadImage(image: image)
             
             // start listening for the resulting image
+            showingSecondScreen.toggle()
             
         } label: {
             VStack {
