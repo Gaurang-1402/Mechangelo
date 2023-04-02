@@ -19,46 +19,90 @@ struct ContentView: View {
     @State var drawingTool: tool = .pen
     @State var showingSecondScreen = false
     @State var lastURL = ""
+    @State var url2: URL? = nil
     @State var showingAlert = false
     @State var imagesToSave = [Image("")]
     @State var keepPolling = true
+    @State var showScreen = false
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     var body: some View {
         HStack {
             DrawingView(canvas: $canvas, isDraw: $isDraw, color: $color, drawingTool: $drawingTool)
-            SideCommitView(canvas: $canvas, isDraw: $isDraw, color: $color, drawingTool: $drawingTool, showingSecondScreen: $showingSecondScreen)
+            SideCommitView(canvas: $canvas, isDraw: $isDraw, color: $color, drawingTool: $drawingTool, showingSecondScreen: $showingSecondScreen, showScreen: $showScreen)
                 .frame(width: 300)
         }
         .ignoresSafeArea()
-//        .fullScreenCover(isPresented: $showingSecondScreen) {
-//            ResultImage(lastURL: $lastURL)
-//        }
         .onAppear {
             // get the url and store it in lastURL=
             initialzeURL()
         }
-        .alert("Lights On!", isPresented: $showingAlert, actions: {
-            Button("Save to Photos", role: .cancel) {
-                for image in imagesToSave {
-                    let uiimage = image.asUIImage()
-                    UIImageWriteToSavedPhotosAlbum(uiimage, nil, nil, nil);
-                }
-            }
-            .disabled(keepPolling)
-            Button("Cancel", role: .cancel, action: {})
-        }) {
-            ScrollView(.horizontal) {
-                ResultImage(lastURL: $lastURL, keepPolling: $keepPolling)
-            }
-        }
+//        .sheet(isPresented: $showingAlert, content: {
+//            ResultImage(lastURL: $lastURL, keepPolling: $keepPolling)
+//        })
+//        .alert("Lights On!", isPresented: $showingAlert, actions: {
+//            Button("Save to Photos", role: .cancel) {
+//                for image in imagesToSave {
+//                    let uiimage = image.asUIImage()
+//                    UIImageWriteToSavedPhotosAlbum(uiimage, nil, nil, nil);
+//                }
+//            }
+//            .disabled(keepPolling)
+//            Button("Cancel", role: .cancel, action: {})
+//        }) {
+//            ResultImage(lastURL: $lastURL, keepPolling: $keepPolling)
+//        }
         .onReceive(timer) { _ in
             print("timer fired")
-            if !showingSecondScreen { return }
-            if !showingAlert { showingAlert = true }
+//            if !showingSecondScreen { return }
+//            if !showingAlert { showingAlert = true }
             pollServer()
 
-            if !keepPolling {
-                timer.upstream.connect().cancel()
+//            if !keepPolling {
+//                timer.upstream.connect().cancel()
+//            }
+        }
+        .sheet(isPresented: $showScreen) {
+            VStack {
+//                ResultImage(lastURL: $lastURL, keepPolling: $keepPolling)
+//                Text("hi")
+                if url2 != nil && !keepPolling {
+                    AsyncImage(url: url2, content: { image in
+                        // download the image
+                        
+                        
+                        VStack {
+                            image
+                                .resizable()
+                                .frame(width: 600, height: 600)
+                                .scaledToFill()
+                            Button {
+                                UIImageWriteToSavedPhotosAlbum(image.asUIImage(), nil, nil, nil);
+                                showScreen.toggle()
+                            } label: {
+                                Text("Download In Camera Roll!")
+                                    .foregroundColor(.white)
+                            }
+                            .padding()
+                            .frame(width: 285)
+                            .background(Color("MenuColor"))
+                            .cornerRadius(10)
+                            .padding(.bottom, 10)
+
+                            .glow(color: .blue, radius: 1)
+
+                        }
+                    }, placeholder: {
+                        ProgressView()
+                    })
+                    .frame(width: 100, height: 100)
+                } else {
+                    ProgressView()
+                }
+            }
+            .onDisappear {
+                keepPolling = true
+//                timer.upstream.connect().cancel()
+//                timer.upstream.connect()
             }
         }
     }
@@ -106,7 +150,11 @@ struct ContentView: View {
                         print("DEBUG: \(url.absoluteString) \(lastURL)")
                         if url.absoluteString != lastURL {
                             lastURL = url.absoluteString
+                            url2 = url
                             keepPolling = false
+                            print("DEBUG: here")
+                            showingSecondScreen.toggle()
+//                            showScreen.toggle()
                         }
                     }
                 }

@@ -10,11 +10,13 @@ import FirebaseStorage
 
 struct ResultImage: View {
     @Binding var lastURL: String
-    @Binding var keepPolling: Bool 
+    @Binding var keepPolling: Bool
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         VStack {
             EmptyView()
+            
             if URL(string: lastURL) == nil && !keepPolling {
                 AsyncImage(url: URL(string: lastURL), content: { image in
                     image
@@ -24,6 +26,13 @@ struct ResultImage: View {
             } else {
                 ProgressView()
             }
+                
+            Button {
+                dismiss.callAsFunction()
+            } label: {
+                Text("X")
+            }
+
         }
         
     }

@@ -13,16 +13,25 @@ struct GrowingButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
-            .frame(width: 250)
-            .background(Color("CustomTeal"))
-            .foregroundColor(.black)
+            .frame(width: 285)
+            .background(Color("MenuColor"))
+//            .foregroundColor(.black)
             .cornerRadius(10)
             .scaleEffect(configuration.isPressed ? 1.2 : 1)
             .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
             .padding(.bottom, 10)
+            .glow(color: .blue, radius: 1)
+
     }
 }
-
+extension View {
+    func glow(color: Color = .blue, radius: CGFloat = 20) -> some View {
+        self
+            .shadow(color: color, radius: radius / 3)
+            .shadow(color: color, radius: radius / 3)
+            .shadow(color: color, radius: radius / 3)
+    }
+}
 struct SideCommitView: View {
     
     @Binding var canvas: PKCanvasView
@@ -32,6 +41,9 @@ struct SideCommitView: View {
     @Binding var showingSecondScreen: Bool
     @State var showingImagePicker: Bool = false
     @State var uploadedImage: UIImage? = nil
+    @State var showingAlert = false
+    @Binding var showScreen: Bool
+
     var body: some View {
         ZStack {
             Color("CustomBrown")
@@ -44,31 +56,42 @@ struct SideCommitView: View {
                     .aspectRatio(contentMode: .fit)
                     .padding(.vertical,5)
                     .padding(.horizontal, 10)
+                    .glow(color: .white)
+                    .glow(color: .red)
+                    .offset(x: -20)
 
                 CanvasMenu(toolSelection: $drawingTool, color: $color, canvas: $canvas)
                     .padding(.leading)
                     .padding(.bottom)
+//                    .glow(color: .red)
+                    .glow(color: .blue)
+                    .offset(x: -20)
                 
                 uploadButton()
+                    .glow()
                     .buttonStyle(GrowingButton())
                 
                 commitButton()
                     .buttonStyle(GrowingButton())
+                    .glow()
                 
             }
         }
         .ignoresSafeArea()
         .onChange(of: uploadedImage) { newValue in
             guard let newValue else { return }
+            showScreen = true
             uploadImage(image: newValue)
         }
         .popover(isPresented: $showingImagePicker) {
             ImagePicker(image: $uploadedImage)
         }
+        .alert("Let There Be Light!", isPresented: $showingAlert, actions: {}, message: {Text("Your image is uploaded. All that's left is your light painting.")})
     }
     
     func loadImage() {
         guard let uploadedImage else { return }
+        
     }
     
     func uploadButton() -> some View {
@@ -76,7 +99,13 @@ struct SideCommitView: View {
             showingImagePicker.toggle()
         } label: {
             Text("Light an uploaded image ✨")
+                .underline()
+                .fontWeight(.heavy)
+                .glow(color: .red)
+                .fontWeight(.heavy)
+                .foregroundColor(.white)
         }
+        
     }
     
     func commitButton() -> some View {
@@ -99,13 +128,21 @@ struct SideCommitView: View {
             // send to firestore
             uploadImage(image: image)
             
+            // signal the alert
+//            showingAlert.toggle()
+            
             // start listening for the resulting image
             showingSecondScreen.toggle()
+            showScreen.toggle()
             
         } label: {
             VStack {
                 Text("Light my drawing 🔥")
+                    .underline()
+                    .fontWeight(.heavy)
+                    .glow(color: .red)
                     .fixedSize(horizontal: false, vertical: true)
+                    .foregroundColor(.white)
 
             }
         }

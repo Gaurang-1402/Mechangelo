@@ -15,10 +15,11 @@ struct ContentView2: View {
     @State var drawingTool: tool = .pen
     @State var showingSecondScreen = false
     @State var lastURL = ""
+    @State var showScreen = false
     var body: some View {
         HStack {
             DrawingView(canvas: $canvas, isDraw: $isDraw, color: $color, drawingTool: $drawingTool)
-            SideCommitView(canvas: $canvas, isDraw: $isDraw, color: $color, drawingTool: $drawingTool, showingSecondScreen: $showingSecondScreen)
+            SideCommitView(canvas: $canvas, isDraw: $isDraw, color: $color, drawingTool: $drawingTool, showingSecondScreen: $showingSecondScreen, showScreen: $showScreen)
                 .frame(width: 400)
         }
         .ignoresSafeArea()

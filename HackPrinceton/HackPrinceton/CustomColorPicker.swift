@@ -28,13 +28,17 @@ struct CanvasMenu: View {
     var body: some View {
         VStack(alignment: .center) {
             Text("Color")
-                .fontWeight(.black)
+                .foregroundColor(.white)
+                .fontWeight(.heavy)
+                .glow(color: .red, radius: 1.4)
             HStack(spacing: 0) {
                 CustomColorPicker(selectedColor: $color, drawingTool: $toolSelection)
             }
             
             Text("Tools")
-                .fontWeight(.black)
+                .foregroundColor(.white)
+                .fontWeight(.heavy)
+                .glow(color: .red, radius: 1.4)
                 .padding(.bottom)
             toolSection()
         }
