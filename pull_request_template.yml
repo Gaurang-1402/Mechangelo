@@ -1,0 +1,116 @@
+# Feature Request template
+name: Feature Request
+about: Use this template for proposing a new feature
+
+title: '[Feature Request] '
+labels: ['feature request']
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Feature Request
+
+        **Description:**
+        Please provide a clear and concise description of the feature you are proposing.
+
+        **Motivation:**
+        Please describe the motivation or use case for this feature.
+
+        **Expected Behavior:**
+        Please describe the expected behavior of the feature.
+
+        **Additional Information:**
+        Add any other context or screenshots about the feature request here.
+
+  - type: input
+    id: author_name
+    attributes:
+      label: 'Your Name'
+      description: 'Enter your name'
+      placeholder: 'e.g. John Doe'
+      required: true
+
+  - type: input
+    id: author_email
+    attributes:
+      label: 'Your Email'
+      description: 'Enter your email'
+      placeholder: 'e.g. john.doe@example.com'
+      required: true
+
+  - type: input
+    id: contributor_name
+    attributes:
+      label: 'Contributor Name'
+      description: 'Enter the name of the contributor (if different from above)'
+      placeholder: 'e.g. Jane Smith'
+      required: false
+
+  - type: input
+    id: contributor_email
+    attributes:
+      label: 'Contributor Email'
+      description: 'Enter the email of the contributor (if different from above)'
+      placeholder: 'e.g. jane.smith@example.com'
+      required: false
+
+# Bug report template
+name: Bug Report
+about: Use this template for reporting a bug
+
+title: '[Bug] '
+labels: ['bug']
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Bug Report
+
+        **Description:**
+        Please provide a clear and concise description of the bug you have encountered.
+
+        **Steps to Reproduce:**
+        Please provide detailed steps to reproduce the bug.
+
+        **Expected Behavior:**
+        Please describe the expected behavior of the system.
+
+        **Actual Behavior:**
+        Please describe the actual behavior you observed.
+
+        **Additional Information:**
+        Add any other context or screenshots about the bug here.
+
+  - type: input
+    id: author_name
+    attributes:
+      label: 'Your Name'
+      description: 'Enter your name'
+      placeholder: 'e.g. John Doe'
+      required: true
+
+  - type: input
+    id: author_email
+    attributes:
+      label: 'Your Email'
+      description: 'Enter your email'
+      placeholder: 'e.g. john.doe@example.com'
+      required: true
+
+  - type: input
+    id: contributor_name
+    attributes:
+      label: 'Contributor Name'
+      description: 'Enter the name of the contributor (if different from above)'
+      placeholder: 'e.g. Jane Smith'
+      required: false
+
+  - type: input
+    id: contributor_email
+    attributes:
+      label: 'Contributor Email'
+      description: 'Enter the email of the contributor (if different from above)'
+      placeholder: 'e.g. jane.smith@example.com'
+      required: false
