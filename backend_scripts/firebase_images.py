@@ -29,6 +29,15 @@ while True:
                 # Update the last modified time
                 last_modified = blob.updated
                 
+                                # Download the blob as bytes
+                blob_bytes = blob.download_as_bytes()
+
+                # Open the bytes as an image using Pillow
+                image = Image.open(BytesIO(blob_bytes))
+
+                # Save the image to a local file
+                image.save("image.jpg")
+
                 print("Image file has been modified")
 
     # Wait for 5 seconds before checking again
