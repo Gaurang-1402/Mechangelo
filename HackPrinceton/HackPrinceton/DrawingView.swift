@@ -92,7 +92,7 @@ struct DrawingViewRepresentable : UIViewRepresentable {
     
     
     var ink: PKInkingTool {
-        PKInkingTool(.pen, color: UIColor(color.wrappedValue))
+        PKInkingTool(.marker, color: UIColor(color.wrappedValue))
     }
 
     let partialEraser = PKEraserTool(.bitmap)

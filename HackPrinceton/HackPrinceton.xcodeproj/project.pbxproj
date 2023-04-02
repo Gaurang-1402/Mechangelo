@@ -22,6 +22,8 @@
 		417EDE1729D8722200F5379E /* CustomColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417EDE1629D8722200F5379E /* CustomColorPicker.swift */; };
 		417EDE1929D8906C00F5379E /* SideCommitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417EDE1829D8906C00F5379E /* SideCommitView.swift */; };
 		417EDE1B29D8C1BB00F5379E /* ResultImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417EDE1A29D8C1BB00F5379E /* ResultImage.swift */; };
+		417EDE1D29D90DEA00F5379E /* ContentView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417EDE1C29D90DEA00F5379E /* ContentView2.swift */; };
+		41F0D30A29D922C200F2A91A /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F0D30929D922C200F2A91A /* ImagePicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		417EDE1629D8722200F5379E /* CustomColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorPicker.swift; sourceTree = "<group>"; };
 		417EDE1829D8906C00F5379E /* SideCommitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideCommitView.swift; sourceTree = "<group>"; };
 		417EDE1A29D8C1BB00F5379E /* ResultImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultImage.swift; sourceTree = "<group>"; };
+		417EDE1C29D90DEA00F5379E /* ContentView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView2.swift; sourceTree = "<group>"; };
+		41F0D30929D922C200F2A91A /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,9 +79,11 @@
 			children = (
 				417EDDF329D7B85300F5379E /* HackPrincetonApp.swift */,
 				417EDDF529D7B85300F5379E /* ContentView.swift */,
+				417EDE1C29D90DEA00F5379E /* ContentView2.swift */,
 				417EDE1A29D8C1BB00F5379E /* ResultImage.swift */,
 				417EDE0129D7BAE000F5379E /* DrawingView.swift */,
 				417EDE1829D8906C00F5379E /* SideCommitView.swift */,
+				41F0D30929D922C200F2A91A /* ImagePicker.swift */,
 				417EDE1629D8722200F5379E /* CustomColorPicker.swift */,
 				417EDE1429D86F4C00F5379E /* GoogleService-Info.plist */,
 				417EDE1029D7E0FC00F5379E /* CameraView.swift */,
@@ -179,8 +185,10 @@
 				417EDE1929D8906C00F5379E /* SideCommitView.swift in Sources */,
 				417EDE1729D8722200F5379E /* CustomColorPicker.swift in Sources */,
 				417EDE0229D7BAE000F5379E /* DrawingView.swift in Sources */,
+				41F0D30A29D922C200F2A91A /* ImagePicker.swift in Sources */,
 				417EDE1B29D8C1BB00F5379E /* ResultImage.swift in Sources */,
 				417EDDF629D7B85300F5379E /* ContentView.swift in Sources */,
+				417EDE1D29D90DEA00F5379E /* ContentView2.swift in Sources */,
 				417EDDF429D7B85300F5379E /* HackPrincetonApp.swift in Sources */,
 				417EDE1129D7E0FC00F5379E /* CameraView.swift in Sources */,
 			);
@@ -314,6 +322,7 @@
 				DEVELOPMENT_TEAM = X622SX6D57;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -344,6 +353,7 @@
 				DEVELOPMENT_TEAM = X622SX6D57;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

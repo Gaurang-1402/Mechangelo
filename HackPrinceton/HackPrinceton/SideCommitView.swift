@@ -13,11 +13,13 @@ struct GrowingButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
+            .frame(width: 250)
             .background(Color("CustomTeal"))
             .foregroundColor(.black)
             .cornerRadius(10)
             .scaleEffect(configuration.isPressed ? 1.2 : 1)
             .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
+            .padding(.bottom, 10)
     }
 }
 
@@ -28,38 +30,53 @@ struct SideCommitView: View {
     @Binding var color: Color
     @Binding var drawingTool: tool
     @Binding var showingSecondScreen: Bool
+    @State var showingImagePicker: Bool = false
+    @State var uploadedImage: UIImage? = nil
     var body: some View {
         ZStack {
             Color("CustomBrown")
             VStack {
-                CanvasMenu(toolSelection: $drawingTool, color: $color, canvas: $canvas)
-                    .padding(.leading)
                 
                 Image("MenuLogo")
                     .resizable()
+                    .scaleEffect(0.8)
                     .scaledToFit()
                     .aspectRatio(contentMode: .fit)
-                    .padding(.vertical,50)
+                    .padding(.vertical,5)
                     .padding(.horizontal, 10)
-//
-//                Spacer()
-//                Button {
-//
-//                } label: {
-//                    Text("Upload Image")
-//                }
-//                .padding(50)
-//                .buttonStyle(GrowingButton())
-//
+
+                CanvasMenu(toolSelection: $drawingTool, color: $color, canvas: $canvas)
+                    .padding(.leading)
+                    .padding(.bottom)
+                
+                uploadButton()
+                    .buttonStyle(GrowingButton())
+                
                 commitButton()
-                    .multilineTextAlignment(.center)
-//                .padding(50)
-                .buttonStyle(GrowingButton())
-                .padding(.bottom, 10)
+                    .buttonStyle(GrowingButton())
                 
             }
         }
         .ignoresSafeArea()
+        .onChange(of: uploadedImage) { newValue in
+            guard let newValue else { return }
+            uploadImage(image: newValue)
+        }
+        .popover(isPresented: $showingImagePicker) {
+            ImagePicker(image: $uploadedImage)
+        }
+    }
+    
+    func loadImage() {
+        guard let uploadedImage else { return }
+    }
+    
+    func uploadButton() -> some View {
+        Button {
+            showingImagePicker.toggle()
+        } label: {
+            Text("Light an uploaded image ✨")
+        }
     }
     
     func commitButton() -> some View {
@@ -87,7 +104,7 @@ struct SideCommitView: View {
             
         } label: {
             VStack {
-                Text("Draw My \nLight Painting!")
+                Text("Light my drawing 🔥")
                     .fixedSize(horizontal: false, vertical: true)
 
             }

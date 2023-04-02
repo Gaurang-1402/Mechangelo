@@ -11,13 +11,13 @@ import PencilKit
 struct CustomColorPickerSample: View {
     @State private var selectedColor = Color.blue
     @State var isDraw: tool = .pen
-       var body: some View {
-           ZStack {
-               CustomColorPicker(selectedColor: $selectedColor, drawingTool: $isDraw)
-                   .padding()
-           }
-           .frame(maxWidth: .infinity, maxHeight: .infinity)
-       }
+    var body: some View {
+        ZStack {
+            CustomColorPicker(selectedColor: $selectedColor, drawingTool: $isDraw)
+                .padding()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
 }
 
 struct CanvasMenu: View {
@@ -70,11 +70,36 @@ struct CanvasMenu: View {
         }) {
             VStack {
                 Image(systemName: imgName)
-//                Text(label)
             }
         }
-        .padding(.bottom)
-                       )
+            .padding(.bottom)
+        )
+    }
+    
+    func downloadImageButton() -> some View {
+        Button(action: {
+            // Create a new graphics context with a black background color
+            UIGraphicsBeginImageContextWithOptions(canvas.bounds.size, false, 1.0)
+            let context = UIGraphicsGetCurrentContext()!
+            context.setFillColor(UIColor.black.cgColor)
+            context.fill(canvas.bounds)
+
+            // Draw the canvas image onto the context
+            canvas.drawing.image(from: canvas.bounds, scale: 1).draw(in: canvas.bounds)
+
+            // Get the resulting image from the context
+            let image = UIGraphicsGetImageFromCurrentImageContext()!
+
+            // End the context
+            UIGraphicsEndImageContext()
+
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+        }) {
+            VStack {
+                Image(systemName: "square.and.arrow.down.fill")
+                Text("Save")
+            }
+        }
     }
     
     func toolSection() -> some View {
@@ -85,6 +110,7 @@ struct CanvasMenu: View {
                 singleTool(label: "partial eraser", imageName: "eraser", associatedTool: .partialEraser)
             }
             clearSelection()
+            downloadImageButton()
         }
     }
 }
@@ -105,23 +131,23 @@ struct CustomColorPicker: View {
                             .teal,
                             .blue]
     var body: some View {
-            HStack(spacing: 10) {
-                VStack(spacing: 20) {
-                    ForEach(colors, id: \.self) { color in
-                        button(color: color)
-                    }
-                }
-                VStack(spacing: 20) {
-                    ForEach(colors2, id: \.self) { color in
-                        button(color: color)
-                    }
-                }
-                VStack(spacing: 20) {
-                    ForEach(colors3, id: \.self) { color in
-                        button(color: color)
-                    }
+        HStack(spacing: 10) {
+            VStack(spacing: 20) {
+                ForEach(colors, id: \.self) { color in
+                    button(color: color)
                 }
             }
+            VStack(spacing: 20) {
+                ForEach(colors2, id: \.self) { color in
+                    button(color: color)
+                }
+            }
+            VStack(spacing: 20) {
+                ForEach(colors3, id: \.self) { color in
+                    button(color: color)
+                }
+            }
+        }
     }
     
     func button(color: Color) -> some View {
