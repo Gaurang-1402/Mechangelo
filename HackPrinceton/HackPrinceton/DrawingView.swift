@@ -32,8 +32,7 @@ struct DrawingView: View {
                 DrawingViewRepresentable(canvas: $canvas, isDraw: $isDraw, color: $color, drawingTool: $drawingTool)
                     .aspectRatio(contentMode: .fill)
                 
-                CanvasMenu(toolSelection: $drawingTool, color: $color, canvas: $canvas)
-                    .padding(.leading)
+        
 //                commitButton()
             }
 //        }
@@ -93,7 +92,7 @@ struct DrawingViewRepresentable : UIViewRepresentable {
     
     
     var ink: PKInkingTool {
-        PKInkingTool(.pen, color: UIColor(color.wrappedValue))
+        PKInkingTool(.marker, color: UIColor(color.wrappedValue))
     }
 
     let partialEraser = PKEraserTool(.bitmap)
